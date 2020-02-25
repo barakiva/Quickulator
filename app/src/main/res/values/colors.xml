@@ -8,4 +8,7 @@
     <color name="deepBlue">#5C6470</color>
     <color name="brightGrey">#F1F1F1</color>
     <color name="strongGrey">#E8E8E8</color>
+    <color name="freshGreenText">#DBFEE7</color>
+
+    <color name="operatorBtnBorder">#DBFEE7</color>
 </resources>

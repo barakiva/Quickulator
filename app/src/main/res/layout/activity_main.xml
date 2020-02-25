@@ -12,9 +12,9 @@
             android:layout_height="0dp"
             android:background="@color/deepBlue"
             app:layout_constraintBottom_toTopOf="@id/topGuide"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -22,26 +22,85 @@
             android:id="@+id/numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintHorizontal_weight="4"
             android:background="@color/brightGrey"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/calculatorModesTab"
             app:layout_constraintEnd_toStartOf="@+id/operationsToolbar"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/topGuide"
-            app:layout_constraintBottom_toTopOf="@id/calculatorModesTab">
+            app:layout_constraintTop_toTopOf="@id/topGuide">
 
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.20" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.40" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.60" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.80" />
+
+
+        <ImageButton
+                android:id="@+id/bracketsBtn"
+                android:layout_width="110dp"
+                android:layout_height="73dp"
+                android:background="@color/brightGrey"
+                app:layout_constraintEnd_toStartOf="@+id/undoBtn"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_brackets" />
+
+        <ImageButton
+                android:id="@+id/undoBtn"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:background="@color/brightGrey"
+                app:layout_constraintEnd_toStartOf="@+id/clearAllBtn"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/bracketsBtn"
+                app:srcCompat="@drawable/ic_undo"
+                tools:layout_editor_absoluteY="24dp" />
+
+        <ImageButton
+                android:id="@+id/clearAllBtn"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:background="@color/brightGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/undoBtn"
+                app:srcCompat="@drawable/ic_delete" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/operationsToolbar"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@id/calculatorModesTab"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/numpad"
             app:layout_constraintTop_toTopOf="@id/topGuide">
 
@@ -51,7 +110,7 @@
                 android:layout_height="0dp"
                 android:background="@color/freshGreen"
                 android:src="@drawable/ic_division"
-                android:drawableTint="@color/brightGrey"
+                android:tint="@color/freshGreenText"
                 app:layout_constraintBottom_toTopOf="@+id/multiplicationBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -64,7 +123,7 @@
                 android:layout_height="0dp"
                 android:background="@color/freshGreen"
                 android:src="@drawable/ic_multiply"
-                android:visibility="visible"
+                android:tint="@color/freshGreenText"
                 app:layout_constraintBottom_toTopOf="@+id/subtractionBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -77,6 +136,7 @@
                 android:layout_height="0dp"
                 android:background="@color/freshGreen"
                 android:src="@drawable/ic_subtraction"
+                android:tint="@color/freshGreenText"
                 app:layout_constraintBottom_toTopOf="@+id/additionBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -89,6 +149,7 @@
                 android:layout_height="0dp"
                 android:background="@color/freshGreen"
                 android:src="@drawable/ic_plus"
+                android:tint="@color/freshGreenText"
                 app:layout_constraintBottom_toTopOf="@+id/equalsBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -101,6 +162,7 @@
                 android:layout_height="0dp"
                 android:background="@color/freshGreen"
                 android:src="@drawable/ic_equal"
+                android:tint="@color/freshGreenText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -138,6 +200,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.27"/>
+            app:layout_constraintGuide_percent="0.27" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
