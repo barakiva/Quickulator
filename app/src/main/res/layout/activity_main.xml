@@ -57,7 +57,8 @@
                 android:layout_column="0"
                 android:layout_row="0"
                 android:background="@color/brightGrey"
-                app:srcCompat="@drawable/ic_delete"/>
+                app:srcCompat="@drawable/ic_delete"
+                android:tint="#333d4d"/>
 
 <!--second row-->
 
@@ -90,6 +91,7 @@
         <Button
                 android:id="@+id/btn7"
                 android:text="7"
+                android:textColor="#455368"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -191,7 +193,7 @@
                 app:srcCompat="@drawable/ic_delete" />
         <ImageButton
                 android:id="@+id/btnHistory"
-                android:text="0"
+                android:src="@drawable/ic_history"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -199,8 +201,7 @@
                 android:layout_rowWeight="1"
                 android:layout_column="1"
                 android:layout_columnWeight="1"
-                android:background="@color/brightGrey"
-                app:srcCompat="@drawable/ic_delete" />
+                android:background="@color/brightGrey" />
         <Button
                 android:id="@+id/btnComma"
                 android:text=","
