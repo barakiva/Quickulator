@@ -16,17 +16,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                tools:layout_editor_absoluteX="177dp"
+                tools:layout_editor_absoluteY="104dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.27" />
 
     <GridLayout
             android:id="@+id/numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/brightGrey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@id/calculatorModesTab"
             app:layout_constraintEnd_toStartOf="@+id/operationsToolbar"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/topGuide">
@@ -39,7 +50,8 @@
                 android:layout_column="2"
                 android:layout_row="0"
                 android:background="@color/brightGrey"
-                app:srcCompat="@drawable/ic_brackets" />
+                app:srcCompat="@drawable/ic_brackets"
+                android:tint="#333d4d"/>
 
         <ImageButton
                 android:id="@+id/undoBtn"
@@ -48,16 +60,17 @@
                 android:background="@color/brightGrey"
                 android:layout_column="1"
                 android:layout_row="0"
-                app:srcCompat="@drawable/ic_undo"/>
+                app:srcCompat="@drawable/ic_undo"
+                android:tint="#333d4d"/>
 
         <ImageButton
                 android:id="@+id/clearAllBtn"
+                app:srcCompat="@drawable/ic_delete"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_column="0"
                 android:layout_row="0"
                 android:background="@color/brightGrey"
-                app:srcCompat="@drawable/ic_delete"
                 android:tint="#333d4d"/>
 
 <!--second row-->
@@ -67,6 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="9"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_row="1"
                 android:layout_rowWeight="1"
@@ -78,6 +92,7 @@
         <Button
                 android:id="@+id/btn8"
                 android:text="8"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +106,7 @@
         <Button
                 android:id="@+id/btn7"
                 android:text="7"
-                android:textColor="#455368"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,6 +121,7 @@
         <Button
                 android:id="@+id/btn4"
                 android:text="4"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -118,6 +134,7 @@
         <Button
                 android:id="@+id/btn5"
                 android:text="5"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,6 +147,7 @@
         <Button
                 android:id="@+id/btn6"
                 android:text="6"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,6 +162,7 @@
         <Button
                 android:id="@+id/btn1"
                 android:text="1"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -156,6 +175,7 @@
         <Button
                 android:id="@+id/btn2"
                 android:text="2"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -168,6 +188,7 @@
         <Button
                 android:id="@+id/btn3"
                 android:text="3"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -179,9 +200,11 @@
                 app:srcCompat="@drawable/ic_delete" />
 
         <!--        fifth row-->
+
         <Button
                 android:id="@+id/btn0"
                 android:text="0"
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -194,17 +217,16 @@
         <ImageButton
                 android:id="@+id/btnHistory"
                 android:src="@drawable/ic_history"
-                android:textSize="44sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_row="4"
                 android:layout_rowWeight="1"
-                android:layout_column="1"
                 android:layout_columnWeight="1"
-                android:background="@color/brightGrey" />
+                android:layout_column="1"
+                android:layout_row="4"
+                android:background="@color/brightGrey"
+                android:tint="#333d4d"/>
         <Button
                 android:id="@+id/btnComma"
                 android:text=","
+                android:textColor="#333d4d"
                 android:textSize="44sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -307,25 +329,18 @@
                 android:id="@+id/fancyTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Monday" />
+                android:text="@string/percentageTab" />
 
         <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tuesday" />
+                android:text="@string/simpleTab" />
 
         <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wednesday" />
+                android:text="@string/scientificTab" />
     </com.google.android.material.tabs.TabLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/topGuide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.27" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
