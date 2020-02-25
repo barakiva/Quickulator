@@ -18,7 +18,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <GridLayout
             android:id="@+id/numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -31,66 +31,190 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/topGuide">
 
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.20" />
-
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.40" />
-
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.60" />
-
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.80" />
-
 
         <ImageButton
                 android:id="@+id/bracketsBtn"
-                android:layout_width="110dp"
-                android:layout_height="73dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_column="2"
+                android:layout_row="0"
                 android:background="@color/brightGrey"
-                app:layout_constraintEnd_toStartOf="@+id/undoBtn"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_brackets" />
 
         <ImageButton
                 android:id="@+id/undoBtn"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
                 android:background="@color/brightGrey"
-                app:layout_constraintEnd_toStartOf="@+id/clearAllBtn"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/bracketsBtn"
-                app:srcCompat="@drawable/ic_undo"
-                tools:layout_editor_absoluteY="24dp" />
+                android:layout_column="1"
+                android:layout_row="0"
+                app:srcCompat="@drawable/ic_undo"/>
 
         <ImageButton
                 android:id="@+id/clearAllBtn"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_column="0"
+                android:layout_row="0"
                 android:background="@color/brightGrey"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/undoBtn"
+                app:srcCompat="@drawable/ic_delete"/>
+
+<!--second row-->
+
+        <Button
+                android:id="@+id/btn9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9"
+                android:textSize="44sp"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_brackets" />
+
+        <Button
+                android:id="@+id/btn8"
+                android:text="8"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_undo" />
+
+        <Button
+                android:id="@+id/btn7"
+                android:text="7"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
                 app:srcCompat="@drawable/ic_delete" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--        third row-->
+        <Button
+                android:id="@+id/btn4"
+                android:text="4"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+        <Button
+                android:id="@+id/btn5"
+                android:text="5"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+        <Button
+                android:id="@+id/btn6"
+                android:text="6"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:layout_rowWeight="1"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+
+<!--        fourth row-->
+        <Button
+                android:id="@+id/btn1"
+                android:text="1"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+        <Button
+                android:id="@+id/btn2"
+                android:text="2"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+        <Button
+                android:id="@+id/btn3"
+                android:text="3"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+
+        <!--        fifth row-->
+        <Button
+                android:id="@+id/btn0"
+                android:text="0"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="4"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+        <ImageButton
+                android:id="@+id/btnHistory"
+                android:text="0"
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="4"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+        <Button
+                android:id="@+id/btnComma"
+                android:text=","
+                android:textSize="44sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="4"
+                android:layout_rowWeight="1"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:background="@color/brightGrey"
+                app:srcCompat="@drawable/ic_delete" />
+
+    </GridLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/operationsToolbar"
@@ -203,3 +327,7 @@
             app:layout_constraintGuide_percent="0.27" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
