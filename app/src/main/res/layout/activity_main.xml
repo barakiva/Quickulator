@@ -36,6 +36,7 @@
             android:id="@+id/numpad"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/brightGrey"
             app:layout_constraintBottom_toTopOf="@id/calculatorModesTab"
             app:layout_constraintEnd_toStartOf="@+id/operationsToolbar"
             app:layout_constraintHorizontal_weight="4"
@@ -214,14 +215,14 @@
                 android:layout_columnWeight="1"
                 android:background="@color/brightGrey"
                 app:srcCompat="@drawable/ic_delete" />
-        <ImageButton
+        <Button
                 android:id="@+id/btnHistory"
                 android:src="@drawable/ic_history"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_column="1"
                 android:layout_row="4"
-                android:background="@color/brightGrey"
+                android:background="@drawable/ic_history"
                 android:tint="#333d4d"/>
         <Button
                 android:id="@+id/btnComma"

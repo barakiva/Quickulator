@@ -1,9 +1,15 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'com.jakewharton.butterknife'
+}
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "com.example.quickulator"
         minSdkVersion 23
@@ -22,7 +28,9 @@ android {
         }
     }
 
+
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -33,4 +41,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
+//    compile group: 'com.jakewharton', name: 'butterknife', version: '10.2.1'
+    implementation group: 'com.jakewharton', name: 'butterknife', version: '10.2.1'
+
 }
+
