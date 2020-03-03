@@ -333,11 +333,13 @@
                 android:text="@string/percentageTab" />
 
         <com.google.android.material.tabs.TabItem
+                android:id="@+id/simpleTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/simpleTab" />
 
         <com.google.android.material.tabs.TabItem
+                android:id="@+id/scientificTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scientificTab" />

@@ -1,16 +1,25 @@
 package com.example.quickulator;
 
+import android.util.Log;
+
+import com.example.quickulator.model.SimpleEquation;
+
 public class ArithmeticService {
-    public double add(double a, double b){
-        return a+b;
+    public void add(SimpleEquation equation){
+        printEquation(equation);
+        equation.setLeftSide(equation.getLeftSide() + equation.getRightSide());
+        printEquation(equation);
     }
-    public double subtract(double a, double b) {
-        return a-b;
+    public void subtract(SimpleEquation equation) {
+        equation.setLeftSide(equation.getLeftSide() - equation.getRightSide());
     }
-    public double multiply(double a, double b) {
-        return a*b;
+    public void multiply(SimpleEquation equation) {
+        equation.setLeftSide(equation.getLeftSide() * equation.getRightSide());
     }
-    public double divide(double a, double b) {
-        return a/b;
+    public void divide(SimpleEquation equation) {
+        equation.setLeftSide(equation.getLeftSide() / equation.getRightSide());
+    }
+    private void printEquation(SimpleEquation equation) {
+        Log.d("Previous", equation.getLeftSide() + " and  " + equation.getRightSide());
     }
 }

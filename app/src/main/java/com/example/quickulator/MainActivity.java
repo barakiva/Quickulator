@@ -1,57 +1,111 @@
 package com.example.quickulator;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import com.example.quickulator.databinding.ActivityMainBinding;
+import com.example.quickulator.model.EquationState;
+import com.example.quickulator.model.Operator;
+import com.example.quickulator.model.SimpleEquation;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+//import com.example.quickulator.databinding.ActivityMainBinding;
 
 
 public class MainActivity extends AppCompatActivity {
 //    numpad features
-    @BindView(R.id.clearAllBtn) ImageButton clearAllBtn;
-    @BindView(R.id.undoBtn) ImageButton undoBtn;
-    @BindView(R.id.bracketsBtn) ImageButton bracketsBtn;
-    @BindView(R.id.btnHistory) ImageButton historyBtn;
+    private ImageButton clearAllBtn;
+    private ImageButton undoBtn;
+    private ImageButton bracketsBtn;
+    private ImageButton historyBtn;
 //    numpad numbers
-    @BindView(R2.id.btn0) Button btn0;
-    @BindView(R2.id.btn1) Button btn1;
-    @BindView(R.id.btn2) Button btn2;
-    @BindView(R.id.btn3) Button btn3;
-    @BindView(R.id.btn4) Button btn4;
-    @BindView(R.id.btn5) Button btn5;
-    @BindView(R.id.btn6) Button btn6;
-    @BindView(R.id.btn7) Button btn7;
-    @BindView(R.id.btn8) Button btn8;
-    @BindView(R.id.btn9) Button btn9;
-//    Operatoions Toolbar
-    @BindView(R.id.additionBtn) ImageButton additionBtn;
-    @BindView(R.id.subtractionBtn) ImageButton subtractionBtn;
-    @BindView(R.id.multiplicationBtn) ImageButton multiplicationBtn;
-    @BindView(R.id.divisionBtn) ImageButton divisionBtn;
-    @BindView(R.id.equalsBtn) ImageButton equalsBtn;
-    private CalculatorLogic calcLogic = CalculatorLogic.getInstance();
-    private final String TAG = "DEBUG";
+    private Button btn0;
+    private Button btn1;
+    private Button btn2;
+    private Button btn3;
+    private Button btn4;
+    private Button btn5;
+    private Button btn6;
+    private Button btn7;
+    private Button btn8;
+    private Button btn9;
+//  private r
+//    private ImageButton additionBtn;
+//    private ImageButton subtractionBtn;
+//    private ImageButton multiplicationBtn;
+//    private ImageButton divisionBtn;
+//    private ImageButton equalsBtn;
 
+    private Set<ImageButton> operatorSet = new HashSet<>();
+    private Set<Button> numPad = new HashSet<>();
+
+    private CalculatorLogic calcLogic = CalculatorLogic.getInstance();
+    private SimpleCalcController simpleCalcController = new SimpleCalcController();
+
+    private final String TAG = "DEBUG";
+    private ActivityMainBinding binding;
+    private Button btn0Test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+//        binding = ActivityMainBinding.inflate(getLayoutInflater());
+//        View view = binding.getRoot();
+//        setContentView(view);
+        Log.d(TAG, "hello");
+
+
+        operatorSet.add(findViewById(R.id.additionBtn));
+        operatorSet.add(findViewById(R.id.subtractionBtn));
+        operatorSet.add(findViewById(R.id.multiplicationBtn));
+        operatorSet.add(findViewById(R.id.divisionBtn));
+        operatorSet.add(findViewById(R.id.equalsBtn));
+
+        numPad.add(findViewById(R.id.btn0));
+        numPad.add(findViewById(R.id.btn1));
+        numPad.add(findViewById(R.id.btn2));
+        numPad.add(findViewById(R.id.btn3));
+        numPad.add(findViewById(R.id.btn4));
+        numPad.add(findViewById(R.id.btn5));
+        numPad.add(findViewById(R.id.btn6));
+        numPad.add(findViewById(R.id.btn7));
+        numPad.add(findViewById(R.id.btn8));
+        numPad.add(findViewById(R.id.btn9));
+
+        for (Button btn : numPad) {
+            btn.setOnClickListener(v -> {
+                SimpleEquation equation = SimpleEquation.getInstance();
+                if(equation.getState() == EquationState.VIRGIN) {
+                    equation.setLeftSide(btn.);
+                }
+                Operator operator = Operator.valueOf(btn.getText().toString());
+//                operatorBtnHandler(operator);
+            });
+        }
+
+//        for (ImageButton btn : operatorSet) {
+//            btn.setOnClickListener(v -> {
+//                ImageButton b = (ImageButton) v;
+//                Operator operator = Operator.valueOf(b.getText().toString());
+//                Log.d(TAG, "Whats up " + b.getText().toString());
+////                operatorBtnHandler(operator);
+//            });
+//        }
+        List<Button> numPad = new ArrayList<>();
 
     }
 
+    private void operatorBtnHandler(Operator op) {
 
-    @OnClick({R2.id.btn0,R2.id.btn1,R2.id.btn2,R2.id.btn3,R2.id.btn4,
-              R2.id.btn5,R2.id.btn6,R2.id.btn7,R2.id.btn8,R2.id.btn9})
-    private void getBtnNum(Button v){
-        calcLogic.digitCatcher(Double.parseDouble
-                (v.getText().toString()));
+
     }
-
 
 }

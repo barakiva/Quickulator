@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'com.jakewharton.butterknife'
 }
 
 android {
@@ -28,7 +27,9 @@ android {
         }
     }
 
-
+    viewBinding {
+        enabled = true
+    }
 }
 
 
@@ -41,8 +42,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-//    compile group: 'com.jakewharton', name: 'butterknife', version: '10.2.1'
-    implementation group: 'com.jakewharton', name: 'butterknife', version: '10.2.1'
-
 }
 
