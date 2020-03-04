@@ -1,20 +1,15 @@
 package com.example.quickulator;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quickulator.databinding.ActivityMainBinding;
-import com.example.quickulator.model.EquationState;
 import com.example.quickulator.model.Operator;
-import com.example.quickulator.model.SimpleEquation;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 //import com.example.quickulator.databinding.ActivityMainBinding;
@@ -57,18 +52,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        View view = binding.getRoot();
-//        setContentView(view);
-        Log.d(TAG, "hello");
 
-
+        //bind operators
         operatorSet.add(findViewById(R.id.additionBtn));
         operatorSet.add(findViewById(R.id.subtractionBtn));
         operatorSet.add(findViewById(R.id.multiplicationBtn));
         operatorSet.add(findViewById(R.id.divisionBtn));
         operatorSet.add(findViewById(R.id.equalsBtn));
-
+        for (ImageButton btn : operatorSet) {
+            btn.setOnClickListener(v -> {
+                Operator operator = Operator.valueOf(btn.getTag().toString());
+                simpleCalcController.operatorInputHandler(operator);
+            });
+        }
+        //bind numpad
         numPad.add(findViewById(R.id.btn0));
         numPad.add(findViewById(R.id.btn1));
         numPad.add(findViewById(R.id.btn2));
@@ -82,24 +79,10 @@ public class MainActivity extends AppCompatActivity {
 
         for (Button btn : numPad) {
             btn.setOnClickListener(v -> {
-                SimpleEquation equation = SimpleEquation.getInstance();
-                if(equation.getState() == EquationState.VIRGIN) {
-                    equation.setLeftSide(btn.);
-                }
-                Operator operator = Operator.valueOf(btn.getText().toString());
-//                operatorBtnHandler(operator);
+                int num = Integer.parseInt(btn.getText().toString());
+                simpleCalcController.numberInputHandler(num);
             });
         }
-
-//        for (ImageButton btn : operatorSet) {
-//            btn.setOnClickListener(v -> {
-//                ImageButton b = (ImageButton) v;
-//                Operator operator = Operator.valueOf(b.getText().toString());
-//                Log.d(TAG, "Whats up " + b.getText().toString());
-////                operatorBtnHandler(operator);
-//            });
-//        }
-        List<Button> numPad = new ArrayList<>();
 
     }
 

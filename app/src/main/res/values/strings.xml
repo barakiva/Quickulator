@@ -3,4 +3,9 @@
     <string name="percentageTab">%</string>
     <string name="simpleTab">Simple</string>
     <string name="scientificTab">Scientific</string>
+    <string name="addition">ADDITION</string>
+    <string name="subtraction">SUBTRACTION</string>
+    <string name="multiplication">MULTIPLICATION</string>
+    <string name="division">DIVISION</string>
+    <string name="equals">EQUALS</string>
 </resources>

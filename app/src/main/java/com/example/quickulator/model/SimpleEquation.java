@@ -6,7 +6,9 @@ public class SimpleEquation {
     private double rightSide;
     private Operator operator;
     private EquationState state;
-    private SimpleEquation(){}
+    private SimpleEquation(){
+        state = EquationState.VIRGIN;
+    }
 
     public static SimpleEquation getInstance() {
         if(instance == null){
@@ -35,8 +37,7 @@ public class SimpleEquation {
         return operator;
     }
 
-    public void setOperator(Operator operator) {
-        this.operator = operator;
+    public void setOperator(Operator operator) { this.operator = operator;
     }
     public EquationState getState() {
         return state;
