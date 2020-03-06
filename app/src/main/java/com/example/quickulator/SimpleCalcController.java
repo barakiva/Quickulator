@@ -1,45 +1,84 @@
 package com.example.quickulator;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.example.quickulator.model.Command;
 import com.example.quickulator.model.EquationState;
 import com.example.quickulator.model.InputHelper;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
 
 public class SimpleCalcController {
+    private static SimpleCalcController instance = null;
 
     private ArithmeticService arithmeticService;
-    private SimpleEquation equation = SimpleEquation.getInstance();
-    private InputHelper inputHelper = InputHelper.getInstance();
+    private OperatorService operatorService;
+    private SimpleEquation equation;
+    private InputHelper inputHelper;
+    private CommandService commandService;
+    private Context context;
 
-    public void numberInputHandler(int num) {
-        inputHelper.getDigitInput().append(num);
+    private SimpleCalcController() {
+        operatorService = new OperatorService(context);
+        arithmeticService = new ArithmeticService();
+        equation = SimpleEquation.getInstance();
+        inputHelper = InputHelper.getInstance();
+        commandService = new CommandService();
     }
-    public void operatorInputHandler(Operator operator) {
-        switch(equation.getState()){
-            case VIRGIN:
-                leftSideConclude(operator);
+    public static SimpleCalcController getInstance() {
+        if(instance == null) {
+            instance = new SimpleCalcController();
+        }
+        return instance;
+    }
+    public void init(Context context) {
+        this.context = context;
+    }
+
+    public void numberInputHandler(double num) {
+        if (equation.getState() == EquationState.RESOLVED) {
+            restartEquation();
+        }
+        inputHelper.appendNumber((num));
+    }
+    //TODO Replace with listener. Input catching should not also be responsible for event handling
+    //based on input
+    public void operatorInputCatcher(Operator operator) {
+        operatorService.operatorHandler(operator);
+    }
+    public void resolveEquation() {
+        arithmeticService.arithmeticResolver(equation);
+    }
+    public void commandHandler(Command command) {
+        switch (command){
+            //TODO shitty hack
+            case EQUALS:
+//                equalsHandlerHack();
+                Log.d("not yet", "coming soon");
                 break;
-            case LEFT_ASSEMBLE:
-                Log.i("info", "left ass");
+            case UNDO:
+                commandService.undoEntry();
                 break;
-            case RIGHT_ASSEMBLE:
-            case RESOLVED:
-                rightSideConclude(operator);
+            case CLEAR:
+                commandService.clearAll();
                 break;
         }
     }
-    private void leftSideConclude(Operator operator) {
-        equation.setLeftSide(Double.parseDouble(inputHelper.toString()));
-        equation.setOperator(operator);
-        equation.setState(EquationState.RIGHT_ASSEMBLE);
+
+    private void equalsHandlerHack() {
+        if(! (equation.getOperator() == null || equation.getOperator() == Operator.CONSUMED)) {
+            operatorInputCatcher(equation.getOperator());
+        }
+        Log.d("error", "cant resolve operation");
     }
-    private void rightSideConclude(Operator operator) {
-        equation.setRightSide(Double.parseDouble(inputHelper.toString()));
-        equation.setOperator(operator);
-        arithmeticService.arithmeticResolver(equation);
+    private void restartEquation() {
+        commandService.clearAll();
     }
 
+    private void updateResult() {
+        MainActivity act = (MainActivity) context;
+        act.setResultView(equation);
+    }
 
 }

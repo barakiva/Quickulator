@@ -5,26 +5,34 @@ import android.util.Log;
 import com.example.quickulator.model.EquationState;
 import com.example.quickulator.model.SimpleEquation;
 
+import static com.example.quickulator.model.Operator.CONSUMED;
+
 public class ArithmeticService {
     public void add(SimpleEquation equation) {
-        printEquation(equation);
-        equation.setLeftSide(equation.getLeftSide() + equation.getRightSide());
-        printEquation(equation);
+        equation.getResultList().add(
+                equation.getArgumentList().get(0) + equation.getArgumentList().get(1)
+        );
     }
 
     public void subtract(SimpleEquation equation) {
-        equation.setLeftSide(equation.getLeftSide() - equation.getRightSide());
-    }
+        equation.getResultList().add(
+                equation.getArgumentList().get(0) - equation.getArgumentList().get(1)
+        );    }
 
     public void multiply(SimpleEquation equation) {
-        equation.setLeftSide(equation.getLeftSide() * equation.getRightSide());
+        equation.getResultList().add(
+                equation.getArgumentList().get(0) * equation.getArgumentList().get(1)
+        );
     }
 
     public void divide(SimpleEquation equation) {
-        equation.setLeftSide(equation.getLeftSide() / equation.getRightSide());
+        equation.getResultList().add(
+                equation.getArgumentList().get(0) / equation.getArgumentList().get(1)
+        );
     }
 
     public void arithmeticResolver(SimpleEquation equation) {
+        printEquation(equation);
         switch (equation.getOperator()) {
             case ADDITION:
                 add(equation);
@@ -39,12 +47,13 @@ public class ArithmeticService {
                 divide(equation);
                 break;
         }
-        equation.setOperator(null);
+        equation.setOperator(CONSUMED);
         equation.setState(EquationState.RESOLVED);
+        equation.getArgumentList().clear();
     }
 
     private void printEquation(SimpleEquation equation) {
-        Log.d("Previous", equation.getLeftSide() + " and  " + equation.getRightSide());
+        Log.d("Left side is  :", equation.getArgumentList().get(0) + " right side is :  " + equation.getArgumentList().get(1));
 
     }
 }

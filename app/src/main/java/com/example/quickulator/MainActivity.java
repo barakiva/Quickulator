@@ -1,15 +1,21 @@
 package com.example.quickulator;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quickulator.databinding.ActivityMainBinding;
+import com.example.quickulator.model.Command;
 import com.example.quickulator.model.Operator;
+import com.example.quickulator.model.SimpleEquation;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //import com.example.quickulator.databinding.ActivityMainBinding;
@@ -38,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
 //    private ImageButton multiplicationBtn;
 //    private ImageButton divisionBtn;
 //    private ImageButton equalsBtn;
-
+    private TextView resultView;
     private Set<ImageButton> operatorSet = new HashSet<>();
+    private Set<ImageButton> commandSet = new HashSet<>();
+
     private Set<Button> numPad = new HashSet<>();
 
     private CalculatorLogic calcLogic = CalculatorLogic.getInstance();
-    private SimpleCalcController simpleCalcController = new SimpleCalcController();
+    private SimpleCalcController simpleCalcController;
 
     private final String TAG = "DEBUG";
     private ActivityMainBinding binding;
@@ -52,17 +60,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        simpleCalcController = SimpleCalcController.getInstance();
+        simpleCalcController.init(this);
 
+        resultView = findViewById(R.id.resultTextView);
+        //bind commands
+        commandSet.add(findViewById(R.id.clearAllBtn));
+        commandSet.add(findViewById(R.id.undoBtn));
+        commandSet.add(findViewById(R.id.equalsBtn));
+        for (ImageButton btn : commandSet) {
+            btn.setOnClickListener(v -> {
+                Command command = Command.valueOf(btn.getTag().toString());
+                Log.d(TAG, "operatorPad " + command.name());
+                simpleCalcController.commandHandler(command);
+            });
+        }
         //bind operators
         operatorSet.add(findViewById(R.id.additionBtn));
         operatorSet.add(findViewById(R.id.subtractionBtn));
         operatorSet.add(findViewById(R.id.multiplicationBtn));
         operatorSet.add(findViewById(R.id.divisionBtn));
-        operatorSet.add(findViewById(R.id.equalsBtn));
         for (ImageButton btn : operatorSet) {
             btn.setOnClickListener(v -> {
                 Operator operator = Operator.valueOf(btn.getTag().toString());
-                simpleCalcController.operatorInputHandler(operator);
+                Log.d(TAG, "operatorPad " + operator.name());
+                simpleCalcController.operatorInputCatcher(operator);
             });
         }
         //bind numpad
@@ -79,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
         for (Button btn : numPad) {
             btn.setOnClickListener(v -> {
-                int num = Integer.parseInt(btn.getText().toString());
+                double num = Integer.parseInt(btn.getText().toString());
+                Log.d(TAG, "numpad" + String.valueOf(num));
                 simpleCalcController.numberInputHandler(num);
             });
         }
@@ -89,6 +112,15 @@ public class MainActivity extends AppCompatActivity {
     private void operatorBtnHandler(Operator op) {
 
 
+    }
+    public void setResultView(SimpleEquation equation) {
+        List<Double> resList = equation.getResultList();
+        String txt = String.valueOf(resList.get( resList.size() - 1));
+        Log.d("equation result is", txt);
+        resultView.setText(txt);
+    }
+    public void displayOperatorError() {
+        Toast.makeText(this, "Incorrect operator input", Toast.LENGTH_LONG).show();
     }
 
 }

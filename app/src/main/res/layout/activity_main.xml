@@ -17,12 +17,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                tools:layout_editor_absoluteX="177dp"
-                tools:layout_editor_absoluteY="104dp" />
+                android:id="@+id/resultTextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -46,6 +47,7 @@
 
         <ImageButton
                 android:id="@+id/bracketsBtn"
+                android:tag="BRACKETS"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_column="2"
@@ -56,6 +58,7 @@
 
         <ImageButton
                 android:id="@+id/undoBtn"
+                android:tag="UNDO"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:background="@color/brightGrey"
@@ -66,6 +69,7 @@
 
         <ImageButton
                 android:id="@+id/clearAllBtn"
+                android:tag="CLEAR"
                 app:srcCompat="@drawable/ic_delete"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
@@ -217,6 +221,7 @@
                 app:srcCompat="@drawable/ic_delete" />
         <Button
                 android:id="@+id/btnHistory"
+                android:tag="HISTORY"
                 android:src="@drawable/ic_history"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"

@@ -1,13 +1,18 @@
 package com.example.quickulator.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleEquation {
     private static SimpleEquation instance = null;
-    private double leftSide;
-    private double rightSide;
+    private List<Double> argumentList;
+    private List<Double> resultList;
     private Operator operator;
+    private Command command;
     private EquationState state;
     private SimpleEquation(){
-        state = EquationState.VIRGIN;
+        resultList = new ArrayList<>();
+        argumentList = new ArrayList<>();
     }
 
     public static SimpleEquation getInstance() {
@@ -17,20 +22,20 @@ public class SimpleEquation {
         return instance;
     }
 
-    public double getLeftSide() {
-        return leftSide;
+    public List<Double> getArgumentList() {
+        return argumentList;
     }
 
-    public void setLeftSide(double leftSide) {
-        this.leftSide = leftSide;
+    public void setArgumentList(List<Double> argumentList) {
+        this.argumentList = argumentList;
     }
 
-    public double getRightSide() {
-        return rightSide;
+    public List<Double> getResultList() {
+        return resultList;
     }
 
-    public void setRightSide(double rightSide) {
-        this.rightSide = rightSide;
+    public void setResultList(List<Double> resultList) {
+        this.resultList = resultList;
     }
 
     public Operator getOperator() {
@@ -45,5 +50,13 @@ public class SimpleEquation {
 
     public void setState(EquationState state) {
         this.state = state;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 }
