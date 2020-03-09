@@ -1,27 +1,28 @@
 package com.example.quickulator;
 
-import android.content.Context;
-
 import com.example.quickulator.model.InputHelper;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
 
 public class OperatorService {
+    //Lessons
+    // services should not know or call controllers. They should only return the output necessary for the controllers to do whatever
+    //needs to be done
     private SimpleEquation equation;
     private InputHelper inputHelper;
     private SimpleCalcController simpleCalcController;
 
-    private Context context;
-    public OperatorService(Context context) {
-        this.context = context;
+    public OperatorService() {
         equation = SimpleEquation.getInstance();
         inputHelper = InputHelper.getInstance();
-        simpleCalcController = SimpleCalcController.getInstance();
+        simpleCalcController = new SimpleCalcController();
     }
-    public void operatorHandler(Operator operator) {
+
+    public int operatorHandler(Operator operator) {
+        int response = 1;
         switch (equation.getArgumentList().size()) {
             case 0:
-                operatorErrorHandler(operator);
+                response = -1;
                 break;
             case 1:
                 loadLeftSide(operator);
@@ -30,10 +31,7 @@ public class OperatorService {
                 loadRightSide(operator);
                 break;
         }
-    }
-    public void operatorErrorHandler(Operator operator) {
-        MainActivity main = (MainActivity) context;
-        main.displayOperatorError();
+        return response;
     }
     private void loadLeftSide(Operator operator) {
         equation.setOperator(operator);

@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        simpleCalcController = SimpleCalcController.getInstance();
+
+        simpleCalcController = new SimpleCalcController();
         simpleCalcController.init(this);
 
         resultView = findViewById(R.id.resultTextView);
@@ -80,13 +81,7 @@ public class MainActivity extends AppCompatActivity {
         operatorSet.add(findViewById(R.id.subtractionBtn));
         operatorSet.add(findViewById(R.id.multiplicationBtn));
         operatorSet.add(findViewById(R.id.divisionBtn));
-        for (ImageButton btn : operatorSet) {
-            btn.setOnClickListener(v -> {
-                Operator operator = Operator.valueOf(btn.getTag().toString());
-                Log.d(TAG, "operatorPad " + operator.name());
-                simpleCalcController.operatorInputCatcher(operator);
-            });
-        }
+        operatorBinder();
         //bind numpad
         numPad.add(findViewById(R.id.btn0));
         numPad.add(findViewById(R.id.btn1));
@@ -109,11 +104,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void operatorBtnHandler(Operator op) {
-
+    private void operatorBinder() {
+        for (ImageButton btn : operatorSet) {
+            btn.setOnClickListener(v -> {
+                Operator operator = Operator.valueOf(btn.getTag().toString());
+                Log.d(TAG, "operatorPad " + operator.name());
+                simpleCalcController.operatorInputCatcher(operator);
+            });
+        }
 
     }
-    public void setResultView(SimpleEquation equation) {
+    public void displayEquation(SimpleEquation equation) {
+
+    }
+
+    public void displayResult(SimpleEquation equation) {
         List<Double> resList = equation.getResultList();
         String txt = String.valueOf(resList.get( resList.size() - 1));
         Log.d("equation result is", txt);

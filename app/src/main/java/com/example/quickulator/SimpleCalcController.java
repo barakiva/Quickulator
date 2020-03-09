@@ -10,8 +10,6 @@ import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
 
 public class SimpleCalcController {
-    private static SimpleCalcController instance = null;
-
     private ArithmeticService arithmeticService;
     private OperatorService operatorService;
     private SimpleEquation equation;
@@ -19,19 +17,14 @@ public class SimpleCalcController {
     private CommandService commandService;
     private Context context;
 
-    private SimpleCalcController() {
-        operatorService = new OperatorService(context);
+    public SimpleCalcController() {
+        operatorService = new OperatorService();
         arithmeticService = new ArithmeticService();
         equation = SimpleEquation.getInstance();
         inputHelper = InputHelper.getInstance();
         commandService = new CommandService();
     }
-    public static SimpleCalcController getInstance() {
-        if(instance == null) {
-            instance = new SimpleCalcController();
-        }
-        return instance;
-    }
+
     public void init(Context context) {
         this.context = context;
     }
@@ -75,10 +68,15 @@ public class SimpleCalcController {
     private void restartEquation() {
         commandService.clearAll();
     }
+    //GUI
+    public void operatorErrorHandler() {
+        MainActivity act = (MainActivity) context;
+        act.displayOperatorError();
+    }
 
     private void updateResult() {
         MainActivity act = (MainActivity) context;
-        act.setResultView(equation);
+        act.displayResult(equation);
     }
 
 }
