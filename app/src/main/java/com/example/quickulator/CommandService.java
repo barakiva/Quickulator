@@ -1,7 +1,10 @@
 package com.example.quickulator;
 
+import android.util.Log;
+
 import com.example.quickulator.model.EquationState;
 import com.example.quickulator.model.InputHelper;
+import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
 
 public class CommandService {
@@ -22,4 +25,11 @@ public class CommandService {
     public void undoEntry() {
         InputHelper.getInstance().clearEntry();
     }
+
+//    private void equalsHandlerHack() {
+//        if(! (equation.getOperator() == null || equation.getOperator() == Operator.CONSUMED)) {
+//            operatorInputCatcher(equation.getOperator());
+//        }
+//        Log.d("error", "cant resolve operation");
+//    }
 }

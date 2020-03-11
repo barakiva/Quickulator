@@ -10,19 +10,24 @@ public class OperatorService {
     //needs to be done
     private SimpleEquation equation;
     private InputHelper inputHelper;
-    private SimpleCalcController simpleCalcController;
+    private ArithmeticService arithmeticService;
 
     public OperatorService() {
         equation = SimpleEquation.getInstance();
         inputHelper = InputHelper.getInstance();
-        simpleCalcController = new SimpleCalcController();
+        arithmeticService = new ArithmeticService();
     }
 
     public int operatorHandler(Operator operator) {
+        int OPERATOR_ERROR = -1;
         int response = 1;
         switch (equation.getArgumentList().size()) {
             case 0:
-                response = -1;
+                if(anyPreviousDigitInput()) {
+                    loadLeftSide(operator);
+                } else {
+                    response = OPERATOR_ERROR;
+                }
                 break;
             case 1:
                 loadLeftSide(operator);
@@ -33,13 +38,16 @@ public class OperatorService {
         }
         return response;
     }
+    private boolean anyPreviousDigitInput() {
+        return inputHelper.getDigitInput().length() > 0;
+    }
     private void loadLeftSide(Operator operator) {
         equation.setOperator(operator);
         equation.getArgumentList().add(inputHelper.buildNumber());
     }
     private void loadRightSide(Operator operator) {
         equation.getArgumentList().add(inputHelper.buildNumber());
-        simpleCalcController.resolveEquation();
+        arithmeticService.arithmeticResolver(equation);
         equation.setOperator(operator);;
     }
 }

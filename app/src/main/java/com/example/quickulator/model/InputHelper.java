@@ -14,7 +14,7 @@ public class InputHelper {
     }
 
     public void appendNumber(double num) {
-        digitInput.append(num);
+        digitInput.append((int) num);
     }
     public double buildNumber() {
         double num = Double.parseDouble(digitInput.toString());
@@ -23,5 +23,9 @@ public class InputHelper {
     }
     public void clearEntry() {
         digitInput.setLength(0);
+    }
+
+    public StringBuilder getDigitInput() {
+        return digitInput;
     }
 }

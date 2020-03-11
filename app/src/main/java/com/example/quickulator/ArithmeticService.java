@@ -53,7 +53,8 @@ public class ArithmeticService {
     }
 
     private void printEquation(SimpleEquation equation) {
-        Log.d("Left side is  :", equation.getArgumentList().get(0) + " right side is :  " + equation.getArgumentList().get(1));
+        Log.d("Left side is  :", equation.getArgumentList().get(0) +
+                   " right side is :  " + equation.getArgumentList().get(1));
 
     }
 }

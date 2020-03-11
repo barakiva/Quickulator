@@ -69,13 +69,7 @@ public class MainActivity extends AppCompatActivity {
         commandSet.add(findViewById(R.id.clearAllBtn));
         commandSet.add(findViewById(R.id.undoBtn));
         commandSet.add(findViewById(R.id.equalsBtn));
-        for (ImageButton btn : commandSet) {
-            btn.setOnClickListener(v -> {
-                Command command = Command.valueOf(btn.getTag().toString());
-                Log.d(TAG, "operatorPad " + command.name());
-                simpleCalcController.commandHandler(command);
-            });
-        }
+        commandBinder();
         //bind operators
         operatorSet.add(findViewById(R.id.additionBtn));
         operatorSet.add(findViewById(R.id.subtractionBtn));
@@ -93,7 +87,19 @@ public class MainActivity extends AppCompatActivity {
         numPad.add(findViewById(R.id.btn7));
         numPad.add(findViewById(R.id.btn8));
         numPad.add(findViewById(R.id.btn9));
+        numpadBinder();
 
+    }
+    private  void commandBinder() {
+        for (ImageButton btn : commandSet) {
+            btn.setOnClickListener(v -> {
+                Command command = Command.valueOf(btn.getTag().toString());
+                Log.d(TAG, "operatorPad " + command.name());
+                simpleCalcController.commandHandler(command);
+            });
+        }
+    }
+    private void numpadBinder() {
         for (Button btn : numPad) {
             btn.setOnClickListener(v -> {
                 double num = Integer.parseInt(btn.getText().toString());
@@ -101,9 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 simpleCalcController.numberInputHandler(num);
             });
         }
-
     }
-
     private void operatorBinder() {
         for (ImageButton btn : operatorSet) {
             btn.setOnClickListener(v -> {
@@ -117,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
     public void displayEquation(SimpleEquation equation) {
 
     }
-
     public void displayResult(SimpleEquation equation) {
         List<Double> resList = equation.getResultList();
         String txt = String.valueOf(resList.get( resList.size() - 1));
         Log.d("equation result is", txt);
         resultView.setText(txt);
     }
-    public void displayOperatorError() {
+    //Errors
+    public void handleOperatorError() {
         Toast.makeText(this, "Incorrect operator input", Toast.LENGTH_LONG).show();
     }
 
