@@ -5,5 +5,6 @@ public enum Operator {
     SUBTRACTION,
     MULTIPLICATION,
     DIVISION,
+    EQUALS,
     CONSUMED
 }

@@ -1,5 +1,7 @@
 package com.example.quickulator;
 
+import android.graphics.Path;
+
 import com.example.quickulator.model.InputHelper;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
@@ -15,28 +17,42 @@ public class OperatorService {
     public OperatorService() {
         equation = SimpleEquation.getInstance();
         inputHelper = InputHelper.getInstance();
-        arithmeticService = new ArithmeticService();
+        arithmeticService = ArithmeticService.getInstance();
     }
 
     public int operatorHandler(Operator operator) {
-        int OPERATOR_ERROR = -1;
         int response = 1;
+        if (operator == Operator.EQUALS)     {
+
+        }
+        whereToAssign(operator);
+        return response;
+    }
+    public int isLegalOperation(Operator operator) {
+        final int OPERATOR_ERROR = -1;
+        final int LEGAL_OPERATION = 1;
+
+        if (!anyPreviousDigitInput()) {
+            return OPERATOR_ERROR;
+        }
+        whereToAssign(operator);
+        return LEGAL_OPERATION;
+
         switch (equation.getArgumentList().size()) {
             case 0:
                 if(anyPreviousDigitInput()) {
                     loadLeftSide(operator);
                 } else {
-                    response = OPERATOR_ERROR;
                 }
                 break;
             case 1:
-                loadLeftSide(operator);
-                break;
-            case 2:
                 loadRightSide(operator);
                 break;
         }
         return response;
+    }
+    private void whereToAssign(Operator operator) {
+
     }
     private boolean anyPreviousDigitInput() {
         return inputHelper.getDigitInput().length() > 0;

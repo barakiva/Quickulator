@@ -8,53 +8,66 @@ import com.example.quickulator.model.SimpleEquation;
 import static com.example.quickulator.model.Operator.CONSUMED;
 
 public class ArithmeticService {
-    public void add(SimpleEquation equation) {
-        equation.getResultList().add(
-                equation.getArgumentList().get(0) + equation.getArgumentList().get(1)
-        );
+    private static ArithmeticService instance;
+    private ArithmeticService() { }
+    public static ArithmeticService getInstance() {
+        if (instance == null) {
+           instance = new ArithmeticService();
+        }
+        return instance;
+    }
+    private double add(SimpleEquation equation) {
+            return equation.getArgumentList().get(0) + equation.getArgumentList().get(1);
     }
 
-    public void subtract(SimpleEquation equation) {
-        equation.getResultList().add(
-                equation.getArgumentList().get(0) - equation.getArgumentList().get(1)
-        );    }
-
-    public void multiply(SimpleEquation equation) {
-        equation.getResultList().add(
-                equation.getArgumentList().get(0) * equation.getArgumentList().get(1)
-        );
+    private double subtract(SimpleEquation equation) {
+           return equation.getArgumentList().get(0) - equation.getArgumentList().get(1);
     }
 
-    public void divide(SimpleEquation equation) {
-        equation.getResultList().add(
-                equation.getArgumentList().get(0) / equation.getArgumentList().get(1)
-        );
+    private double multiply(SimpleEquation equation) {
+           return equation.getArgumentList().get(0) * equation.getArgumentList().get(1);
+    }
+
+    private double divide(SimpleEquation equation) {
+           return equation.getArgumentList().get(0) / equation.getArgumentList().get(1);
     }
 
     public void arithmeticResolver(SimpleEquation equation) {
-        printEquation(equation);
+        double result = 0;
+        printEquationArguments(equation);
         switch (equation.getOperator()) {
             case ADDITION:
-                add(equation);
+                result = add(equation);
                 break;
             case SUBTRACTION:
-                subtract(equation);
+                result = subtract(equation);
                 break;
             case MULTIPLICATION:
-                multiply(equation);
+                result = multiply(equation);
                 break;
             case DIVISION:
-                divide(equation);
+                result = divide(equation);
                 break;
         }
+        updateEquation(equation, result);
+    }
+    private void updateEquation(SimpleEquation equation , double result) {
         equation.setOperator(CONSUMED);
         equation.setState(EquationState.RESOLVED);
+
         equation.getArgumentList().clear();
+        equation.getResultList().add(result);
+        equation.getArgumentList().add(result);
+        printEquationResult(equation);
     }
 
-    private void printEquation(SimpleEquation equation) {
+    private void printEquationArguments(SimpleEquation equation) {
         Log.d("Left side is  :", equation.getArgumentList().get(0) +
                    " right side is :  " + equation.getArgumentList().get(1));
 
+    }
+    private void printEquationResult(SimpleEquation equation) {
+        Log.d("DEBUG", "Result is..." + equation.getResultList().get(
+                equation.getResultList().size() - 1));
     }
 }

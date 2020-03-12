@@ -9,8 +9,10 @@ import com.example.quickulator.model.SimpleEquation;
 
 public class CommandService {
     private SimpleEquation equation;
+    private InputHelper inputHelper;
     public CommandService() {
         equation = SimpleEquation.getInstance();
+        inputHelper = InputHelper.getInstance();
     }
 
     public void resolveEquation() {
@@ -19,6 +21,7 @@ public class CommandService {
     public void clearAll() {
         equation.getArgumentList().clear();
         equation.getResultList().clear();
+        inputHelper.clearEntry();
         equation.setState(EquationState.VIRGIN);
         equation.setOperator(null);
     }
