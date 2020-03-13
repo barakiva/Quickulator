@@ -1,7 +1,5 @@
 package com.example.quickulator;
 
-import android.graphics.Path;
-
 import com.example.quickulator.model.InputHelper;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
@@ -13,6 +11,11 @@ public class OperatorService {
     private SimpleEquation equation;
     private InputHelper inputHelper;
     private ArithmeticService arithmeticService;
+    private Operator operatorInput;
+
+    private int ILLEGAL_OPERATION = -1;
+    private int LEGAL_OPERATION = 1;
+    private int OVERRIDE_OPERATOR = 2;
 
     public OperatorService() {
         equation = SimpleEquation.getInstance();
@@ -20,50 +23,116 @@ public class OperatorService {
         arithmeticService = ArithmeticService.getInstance();
     }
 
-    public int operatorHandler(Operator operator) {
-        int response = 1;
-        if (operator == Operator.EQUALS)     {
-
-        }
-        whereToAssign(operator);
+    public int operatorHandler() {
+        operatorInput = inputHelper.getOperatorInput();
+        int response = 0;
+        response = operatorContextResolver();
         return response;
     }
-    public int isLegalOperation(Operator operator) {
-        final int OPERATOR_ERROR = -1;
-        final int LEGAL_OPERATION = 1;
-
-        if (!anyPreviousDigitInput()) {
-            return OPERATOR_ERROR;
-        }
-        whereToAssign(operator);
-        return LEGAL_OPERATION;
-
-        switch (equation.getArgumentList().size()) {
-            case 0:
-                if(anyPreviousDigitInput()) {
-                    loadLeftSide(operator);
+    private int operatorContextResolver() {
+        int response = 0;
+        if (isEquationEmpty()) {
+            if (anyPreviousDigitInput()) {
+                loadLeftSide();
+                response = LEGAL_OPERATION;
+            } else {
+                response = ILLEGAL_OPERATION;
+            }
+        } else {
+            if (isAfterOperator()) {
+                if (operatorInput == Operator.EQUALS) {
+                    response = ILLEGAL_OPERATION;
                 } else {
+                    response = OVERRIDE_OPERATOR;
+                }
+            } else {
+                //Operator is legal. Decide where to assign
+                if (equation.getArgumentList().size() == 1) {
+                    loadLeftSide();
+                    response = LEGAL_OPERATION;
+                } else {
+                    //Operator came after second argument. Is it equals?
+                    if (operatorInput == Operator.EQUALS) {
+                        resolveEquation();
+                        response = LEGAL_OPERATION;
+                    } else {
+                        loadRightSide();
+                        equation.setOperator(operatorInput);
+                        response = LEGAL_OPERATION;
+                    }
+                }
+            }
+        }
+        return response;
+    }
+    private int operatorResolver() {
+        int response = 0;
+        switch (equation.getOperator()) {
+            case EQUALS:
+                response = equalsResolver();
+                break;
+            case ADDITION:
+            case DIVISION:
+            case SUBTRACTION:
+            case MULTIPLICATION:
+                if (isLegalOperation()) {
+                    howToAssign();
+                } else {
+                    response = ILLEGAL_OPERATION;
                 }
                 break;
-            case 1:
-                loadRightSide(operator);
-                break;
         }
         return response;
     }
-    private void whereToAssign(Operator operator) {
+    private int equalsResolver() {
+        if (canEquationBeResolved()) {
+            resolveEquation();
+            return LEGAL_OPERATION;
+        } else {
+            return ILLEGAL_OPERATION;
+        }
+    }
+    private void howToAssign() {
+        if (operatorInput == Operator.EQUALS) {
+            resolveEquation();
 
+        }
+        if (equation.getArgumentList().size() == 0) {
+            loadLeftSide();
+        } else {
+            loadRightSide();
+        }
+    }
+
+
+    //Resolution
+    private void loadLeftSide() {
+        equation.setOperator(operatorInput);
+        equation.getArgumentList().add(inputHelper.buildNumber());
+    }
+    private void loadRightSide() {
+        equation.getArgumentList().add(inputHelper.buildNumber());
+        resolveEquation();
+        equation.setOperator(operatorInput);;
+    }
+    private void resolveEquation() {
+        arithmeticService.arithmeticResolver(equation);
+    }
+
+    // Sanitization
+    private boolean canEquationBeResolved() {
+        return equation.getArgumentList().size() == 2;
+    }
+    private boolean isLegalOperation() {
+        return anyPreviousDigitInput();
     }
     private boolean anyPreviousDigitInput() {
         return inputHelper.getDigitInput().length() > 0;
     }
-    private void loadLeftSide(Operator operator) {
-        equation.setOperator(operator);
-        equation.getArgumentList().add(inputHelper.buildNumber());
+    private boolean isEquationEmpty() {
+        return equation.getArgumentList().size() == 0;
     }
-    private void loadRightSide(Operator operator) {
-        equation.getArgumentList().add(inputHelper.buildNumber());
-        arithmeticService.arithmeticResolver(equation);
-        equation.setOperator(operator);;
+    private boolean isAfterOperator() {
+        return !(equation.getOperator() != null && equation.getOperator() != Operator.CONSUMED);
     }
 }

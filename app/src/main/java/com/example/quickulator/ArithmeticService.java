@@ -9,6 +9,7 @@ import static com.example.quickulator.model.Operator.CONSUMED;
 
 public class ArithmeticService {
     private static ArithmeticService instance;
+    private final static String TAG = "ArtService";
     private ArithmeticService() { }
     public static ArithmeticService getInstance() {
         if (instance == null) {
@@ -62,12 +63,12 @@ public class ArithmeticService {
     }
 
     private void printEquationArguments(SimpleEquation equation) {
-        Log.d("Left side is  :", equation.getArgumentList().get(0) +
+        Log.d(TAG ,"Left side is  :" + equation.getArgumentList().get(0) +
                    " right side is :  " + equation.getArgumentList().get(1));
 
     }
     private void printEquationResult(SimpleEquation equation) {
-        Log.d("DEBUG", "Result is..." + equation.getResultList().get(
+        Log.d(TAG , "Result is..." + equation.getResultList().get(
                 equation.getResultList().size() - 1));
     }
 }

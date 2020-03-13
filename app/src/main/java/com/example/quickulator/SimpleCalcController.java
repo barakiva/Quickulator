@@ -38,18 +38,14 @@ public class SimpleCalcController {
     }
     public void operatorInputCatcher(Operator operator) {
         MainActivity mainActivity = (MainActivity) context;
-        int handlerResponse = operatorService.operatorHandler(operator);
+        inputHelper.setOperatorInput(operator);
+        int handlerResponse = operatorService.operatorHandler();
         if (handlerResponse == -1) {
             mainActivity.handleOperatorError();
         }
     }
     public void commandHandler(Command command) {
         switch (command){
-            //TODO shitty hack
-            case EQUALS:
-//                equalsHandlerHack();
-                Log.d("not yet", "coming soon");
-                break;
             case UNDO:
                 commandService.undoEntry();
                 break;

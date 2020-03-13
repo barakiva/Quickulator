@@ -15,9 +15,6 @@ public class CommandService {
         inputHelper = InputHelper.getInstance();
     }
 
-    public void resolveEquation() {
-
-    }
     public void clearAll() {
         equation.getArgumentList().clear();
         equation.getResultList().clear();

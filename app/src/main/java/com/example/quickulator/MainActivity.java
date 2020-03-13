@@ -53,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
     private CalculatorLogic calcLogic = CalculatorLogic.getInstance();
     private SimpleCalcController simpleCalcController;
 
-    private final String TAG = "DEBUG";
+    private static final String NUM_PAD = "NumPad";
+    private static final String OPERATOR = "Operator";
+    private static final String COMMAND = "Command";
+
     private ActivityMainBinding binding;
     private Button btn0Test;
     @Override
@@ -68,13 +71,13 @@ public class MainActivity extends AppCompatActivity {
         //bind commands
         commandSet.add(findViewById(R.id.clearAllBtn));
         commandSet.add(findViewById(R.id.undoBtn));
-        commandSet.add(findViewById(R.id.equalsBtn));
         commandBinder();
         //bind operators
         operatorSet.add(findViewById(R.id.additionBtn));
         operatorSet.add(findViewById(R.id.subtractionBtn));
         operatorSet.add(findViewById(R.id.multiplicationBtn));
         operatorSet.add(findViewById(R.id.divisionBtn));
+        operatorSet.add(findViewById(R.id.equalsBtn));
         operatorBinder();
         //bind numpad
         numPad.add(findViewById(R.id.btn0));
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         for (ImageButton btn : commandSet) {
             btn.setOnClickListener(v -> {
                 Command command = Command.valueOf(btn.getTag().toString());
-                Log.d(TAG, "operatorPad " + command.name());
+                Log.i(COMMAND, command.name());
                 simpleCalcController.commandHandler(command);
             });
         }
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         for (Button btn : numPad) {
             btn.setOnClickListener(v -> {
                 double num = Integer.parseInt(btn.getText().toString());
-                Log.d(TAG, "numpad" + String.valueOf(num));
+                Log.i(NUM_PAD, String.valueOf(num));
                 simpleCalcController.numberInputHandler(num);
             });
         }
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         for (ImageButton btn : operatorSet) {
             btn.setOnClickListener(v -> {
                 Operator operator = Operator.valueOf(btn.getTag().toString());
-                Log.d(TAG, "operatorPad " + operator.name());
+                Log.i(OPERATOR, operator.name());
                 simpleCalcController.operatorInputCatcher(operator);
             });
         }
