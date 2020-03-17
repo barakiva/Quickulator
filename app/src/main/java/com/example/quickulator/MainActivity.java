@@ -22,28 +22,6 @@ import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
-//    numpad features
-    private ImageButton clearAllBtn;
-    private ImageButton undoBtn;
-    private ImageButton bracketsBtn;
-    private ImageButton historyBtn;
-//    numpad numbers
-    private Button btn0;
-    private Button btn1;
-    private Button btn2;
-    private Button btn3;
-    private Button btn4;
-    private Button btn5;
-    private Button btn6;
-    private Button btn7;
-    private Button btn8;
-    private Button btn9;
-//  private r
-//    private ImageButton additionBtn;
-//    private ImageButton subtractionBtn;
-//    private ImageButton multiplicationBtn;
-//    private ImageButton divisionBtn;
-//    private ImageButton equalsBtn;
     private TextView resultView;
     private Set<ImageButton> operatorSet = new HashSet<>();
     private Set<ImageButton> commandSet = new HashSet<>();

@@ -2,10 +2,8 @@ package com.example.quickulator;
 
 import android.util.Log;
 
-import com.example.quickulator.model.EquationState;
 import com.example.quickulator.model.SimpleEquation;
 
-import static com.example.quickulator.model.Operator.CONSUMED;
 
 public class ArithmeticService {
     private static ArithmeticService instance;
@@ -53,8 +51,7 @@ public class ArithmeticService {
         updateEquation(equation, result);
     }
     private void updateEquation(SimpleEquation equation , double result) {
-        equation.setOperator(CONSUMED);
-        equation.setState(EquationState.RESOLVED);
+        equation.setOperator(null);
 
         equation.getArgumentList().clear();
         equation.getResultList().add(result);

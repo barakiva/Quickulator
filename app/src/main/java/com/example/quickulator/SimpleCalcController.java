@@ -1,10 +1,8 @@
 package com.example.quickulator;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.quickulator.model.Command;
-import com.example.quickulator.model.EquationState;
 import com.example.quickulator.model.InputHelper;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
@@ -31,7 +29,8 @@ public class SimpleCalcController {
     //based on input
     //**Input Handlers
     public void numberInputHandler(double num) {
-        if (equation.getState() == EquationState.RESOLVED) {
+        boolean isEquationResolved = equation.getResultList().isEmpty();
+        if (isEquationResolved) {
             restartEquation();
         }
         inputHelper.appendNumber((num));

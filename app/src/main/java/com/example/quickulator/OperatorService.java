@@ -1,6 +1,8 @@
 package com.example.quickulator;
 
 import com.example.quickulator.model.InputHelper;
+import com.example.quickulator.model.InputContext;
+import com.example.quickulator.model.OperationResponse;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
 
@@ -13,112 +15,86 @@ public class OperatorService {
     private ArithmeticService arithmeticService;
     private Operator operatorInput;
 
-    private int ILLEGAL_OPERATION = -1;
-    private int LEGAL_OPERATION = 1;
-    private int OVERRIDE_OPERATOR = 2;
-
     public OperatorService() {
         equation = SimpleEquation.getInstance();
         inputHelper = InputHelper.getInstance();
         arithmeticService = ArithmeticService.getInstance();
     }
 
-    public int operatorHandler() {
+    public OperationResponse operatorHandler() throws Exception {
         operatorInput = inputHelper.getOperatorInput();
-        int response = 0;
-        response = operatorContextResolver();
-        return response;
+        return operatorContextResolver();
     }
-    private int operatorContextResolver() {
-        int response = 0;
-        if (isEquationEmpty()) {
-            if (anyPreviousDigitInput()) {
-                loadLeftSide();
-                response = LEGAL_OPERATION;
-            } else {
-                response = ILLEGAL_OPERATION;
-            }
-        } else {
-            if (isAfterOperator()) {
-                if (operatorInput == Operator.EQUALS) {
-                    response = ILLEGAL_OPERATION;
-                } else {
-                    response = OVERRIDE_OPERATOR;
-                }
-            } else {
-                //Operator is legal. Decide where to assign
-                if (equation.getArgumentList().size() == 1) {
-                    loadLeftSide();
-                    response = LEGAL_OPERATION;
-                } else {
-                    //Operator came after second argument. Is it equals?
-                    if (operatorInput == Operator.EQUALS) {
-                        resolveEquation();
-                        response = LEGAL_OPERATION;
-                    } else {
-                        loadRightSide();
-                        equation.setOperator(operatorInput);
-                        response = LEGAL_OPERATION;
-                    }
-                }
-            }
-        }
-        return response;
-    }
-    private int operatorResolver() {
-        int response = 0;
-        switch (equation.getOperator()) {
-            case EQUALS:
-                response = equalsResolver();
+
+    private OperationResponse operatorContextResolver() throws Exception {
+        OperationResponse response = null;
+        switch (determineInputState()) {
+            case OPERATOR_ASSIGNABLE:
+                response  = assignOperator();
                 break;
-            case ADDITION:
-            case DIVISION:
-            case SUBTRACTION:
-            case MULTIPLICATION:
-                if (isLegalOperation()) {
-                    howToAssign();
-                } else {
-                    response = ILLEGAL_OPERATION;
-                }
+            case EQUALS_RESOLVE:
+                response = resolveEquation();
+                break;
+            case OPERATOR_RESOLVE:
+                response = resolveOperator();
+                break;
+            case OPERATOR_OVERRIDABLE:
+                response = overrideOperator();
+                break;
+            case OPERATOR_ILLEGAL:
+                response = operatorNotLegal();
                 break;
         }
         return response;
     }
-    private int equalsResolver() {
-        if (canEquationBeResolved()) {
-            resolveEquation();
-            return LEGAL_OPERATION;
-        } else {
-            return ILLEGAL_OPERATION;
-        }
-    }
-    private void howToAssign() {
-        if (operatorInput == Operator.EQUALS) {
-            resolveEquation();
-
-        }
-        if (equation.getArgumentList().size() == 0) {
-            loadLeftSide();
-        } else {
-            loadRightSide();
-        }
-    }
-
-
-    //Resolution
-    private void loadLeftSide() {
-        equation.setOperator(operatorInput);
+    private OperationResponse assignOperator() {
         equation.getArgumentList().add(inputHelper.buildNumber());
+        equation.setOperator(operatorInput);
+        return OperationResponse.LEGAL;
     }
-    private void loadRightSide() {
+    private OperationResponse resolveEquation() {
+        arithmeticService.arithmeticResolver(equation);
+        return OperationResponse.LEGAL;
+    }
+    private OperationResponse resolveOperator() {
         equation.getArgumentList().add(inputHelper.buildNumber());
         resolveEquation();
-        equation.setOperator(operatorInput);;
+        equation.setOperator(operatorInput);
+        return OperationResponse.LEGAL;
     }
-    private void resolveEquation() {
-        arithmeticService.arithmeticResolver(equation);
+    private OperationResponse overrideOperator() {
+        equation.setOperator(operatorInput);
+        return OperationResponse.OVERRIDE;
+    }
+    private OperationResponse operatorNotLegal() {
+        return OperationResponse.ILLEGAL;
     }
 
+    private InputContext determineInputState() throws Exception {
+        // Conditional components
+        boolean operatorAfterNumber = !isEquationEmpty() && !isAfterOperator();
+        boolean fullEquation = equation.getArgumentList().size() == 2;
+        // Conditional end results
+        boolean firstNumberBuilt = equation.getArgumentList().size() == 1 && operatorAfterNumber;
+        boolean secondNumberBuilt = fullEquation && operatorAfterNumber;
+        boolean equalsAfterFullEquation = fullEquation && operatorInput == Operator.EQUALS;
+        boolean illegalEqualsOperation = isAfterOperator() && operatorInput == Operator.EQUALS;
+
+        if (firstNumberBuilt)
+            return InputContext.OPERATOR_ASSIGNABLE;
+        if (secondNumberBuilt)
+            return operatorInput == Operator.EQUALS ?
+                    InputContext.EQUALS_RESOLVE : InputContext.OPERATOR_RESOLVE;
+        if (equalsAfterFullEquation && canEquationBeResolved())
+            return InputContext.EQUALS_RESOLVE;
+        if (isEquationEmpty())
+            return anyPreviousDigitInput() ?
+                    InputContext.OPERATOR_ASSIGNABLE : InputContext.OPERATOR_ILLEGAL;
+        if (illegalEqualsOperation)
+            return InputContext.OPERATOR_ILLEGAL;
+
+        throw new Exception();
+    }
     // Sanitization
     private boolean canEquationBeResolved() {
         return equation.getArgumentList().size() == 2;
@@ -133,6 +109,7 @@ public class OperatorService {
         return equation.getArgumentList().size() == 0;
     }
     private boolean isAfterOperator() {
-        return !(equation.getOperator() != null && equation.getOperator() != Operator.CONSUMED);
+        boolean isEquationResolved = equation.getResultList().isEmpty();
+        return equation.getOperator() != null && !isEquationResolved;
     }
 }

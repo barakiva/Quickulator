@@ -8,8 +8,6 @@ public class SimpleEquation {
     private List<Double> argumentList;
     private List<Double> resultList;
     private Operator operator;
-    private Command command;
-    private EquationState state;
     private SimpleEquation(){
         resultList = new ArrayList<>();
         argumentList = new ArrayList<>();
@@ -43,20 +41,5 @@ public class SimpleEquation {
     }
 
     public void setOperator(Operator operator) { this.operator = operator;
-    }
-    public EquationState getState() {
-        return state;
-    }
-
-    public void setState(EquationState state) {
-        this.state = state;
-    }
-
-    public Command getCommand() {
-        return command;
-    }
-
-    public void setCommand(Command command) {
-        this.command = command;
     }
 }
