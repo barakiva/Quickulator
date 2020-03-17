@@ -26,6 +26,31 @@ public class OperatorService {
         return operatorContextResolver();
     }
 
+
+    private InputContext determineInputState() throws Exception {
+        // Conditional components
+        boolean operatorAfterNumber = !isEquationEmpty() && !isAfterOperator();
+        boolean fullEquation = equation.getArgumentList().size() == 1 && anyDigitInput();
+        // Conditional end results
+        boolean firstNumberBuilt = equation.getArgumentList().size() == 1 && !anyDigitInput() && operatorAfterNumber;
+        boolean secondNumberBuilt = fullEquation && operatorAfterNumber;
+        boolean equalsAfterFullEquation = operatorInput == Operator.EQUALS && fullEquation;
+        boolean illegalEqualsOperation = isAfterOperator() && operatorInput == Operator.EQUALS;
+        boolean emptyEquationAndNoInput = equation.getArgumentList().isEmpty() && !anyDigitInput();
+
+        if (firstNumberBuilt)
+            return InputContext.OPERATOR_ASSIGNABLE;
+        if (secondNumberBuilt)
+            return operatorInput == Operator.EQUALS ?
+                    InputContext.EQUALS_RESOLVE : InputContext.OPERATOR_RESOLVE;
+        if (equalsAfterFullEquation && canEquationBeResolved())
+            return InputContext.EQUALS_RESOLVE;
+        if (illegalEqualsOperation)
+            return InputContext.OPERATOR_ILLEGAL;
+
+        return emptyEquationAndNoInput ? InputContext.OPERATOR_ILLEGAL : InputContext.OPERATOR_ASSIGNABLE;
+    }
+
     private OperationResponse operatorContextResolver() throws Exception {
         OperationResponse response = null;
         switch (determineInputState()) {
@@ -53,12 +78,13 @@ public class OperatorService {
         return OperationResponse.LEGAL;
     }
     private OperationResponse resolveEquation() {
-        arithmeticService.arithmeticResolver(equation);
+        equation.getArgumentList().add(inputHelper.buildNumber());
+        arithmeticService.resolveEquation(equation);
         return OperationResponse.LEGAL;
     }
     private OperationResponse resolveOperator() {
         equation.getArgumentList().add(inputHelper.buildNumber());
-        resolveEquation();
+        arithmeticService.resolveEquation(equation);
         equation.setOperator(operatorInput);
         return OperationResponse.LEGAL;
     }
@@ -69,44 +95,15 @@ public class OperatorService {
     private OperationResponse operatorNotLegal() {
         return OperationResponse.ILLEGAL;
     }
-
-    private InputContext determineInputState() throws Exception {
-        // Conditional components
-        boolean operatorAfterNumber = !isEquationEmpty() && !isAfterOperator();
-        boolean fullEquation = equation.getArgumentList().size() == 2;
-        // Conditional end results
-        boolean firstNumberBuilt = equation.getArgumentList().size() == 1 && operatorAfterNumber;
-        boolean secondNumberBuilt = fullEquation && operatorAfterNumber;
-        boolean equalsAfterFullEquation = fullEquation && operatorInput == Operator.EQUALS;
-        boolean illegalEqualsOperation = isAfterOperator() && operatorInput == Operator.EQUALS;
-
-        if (firstNumberBuilt)
-            return InputContext.OPERATOR_ASSIGNABLE;
-        if (secondNumberBuilt)
-            return operatorInput == Operator.EQUALS ?
-                    InputContext.EQUALS_RESOLVE : InputContext.OPERATOR_RESOLVE;
-        if (equalsAfterFullEquation && canEquationBeResolved())
-            return InputContext.EQUALS_RESOLVE;
-        if (isEquationEmpty())
-            return anyPreviousDigitInput() ?
-                    InputContext.OPERATOR_ASSIGNABLE : InputContext.OPERATOR_ILLEGAL;
-        if (illegalEqualsOperation)
-            return InputContext.OPERATOR_ILLEGAL;
-
-        throw new Exception();
-    }
     // Sanitization
     private boolean canEquationBeResolved() {
         return equation.getArgumentList().size() == 2;
     }
-    private boolean isLegalOperation() {
-        return anyPreviousDigitInput();
-    }
-    private boolean anyPreviousDigitInput() {
+    private boolean anyDigitInput() {
         return inputHelper.getDigitInput().length() > 0;
     }
     private boolean isEquationEmpty() {
-        return equation.getArgumentList().size() == 0;
+        return equation.getArgumentList().isEmpty() && !anyDigitInput();
     }
     private boolean isAfterOperator() {
         boolean isEquationResolved = equation.getResultList().isEmpty();

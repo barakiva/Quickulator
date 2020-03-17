@@ -31,7 +31,7 @@ public class ArithmeticService {
            return equation.getArgumentList().get(0) / equation.getArgumentList().get(1);
     }
 
-    public void arithmeticResolver(SimpleEquation equation) {
+    public void resolveEquation(SimpleEquation equation) {
         double result = 0;
         printEquationArguments(equation);
         switch (equation.getOperator()) {

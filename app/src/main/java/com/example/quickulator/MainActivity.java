@@ -94,7 +94,11 @@ public class MainActivity extends AppCompatActivity {
             btn.setOnClickListener(v -> {
                 Operator operator = Operator.valueOf(btn.getTag().toString());
                 Log.i(OPERATOR, operator.name());
-                simpleCalcController.operatorInputCatcher(operator);
+                try {
+                    simpleCalcController.operatorInputCatcher(operator);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         }
 
@@ -113,4 +117,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Incorrect operator input", Toast.LENGTH_LONG).show();
     }
 
+    public void handleOperatorOverride() {
+
+    }
 }

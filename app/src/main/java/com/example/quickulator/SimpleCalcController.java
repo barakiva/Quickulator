@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.quickulator.model.Command;
 import com.example.quickulator.model.InputHelper;
+import com.example.quickulator.model.OperationResponse;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
 
@@ -29,18 +30,20 @@ public class SimpleCalcController {
     //based on input
     //**Input Handlers
     public void numberInputHandler(double num) {
-        boolean isEquationResolved = equation.getResultList().isEmpty();
+        boolean isEquationResolved = !equation.getResultList().isEmpty();
         if (isEquationResolved) {
             restartEquation();
         }
         inputHelper.appendNumber((num));
     }
-    public void operatorInputCatcher(Operator operator) {
+    public void operatorInputCatcher(Operator operator) throws Exception {
         MainActivity mainActivity = (MainActivity) context;
         inputHelper.setOperatorInput(operator);
-        int handlerResponse = operatorService.operatorHandler();
-        if (handlerResponse == -1) {
+        OperationResponse handlerResponse = operatorService.operatorHandler();
+        if (handlerResponse == OperationResponse.ILLEGAL) {
             mainActivity.handleOperatorError();
+        } else if (handlerResponse == OperationResponse.OVERRIDE) {
+            mainActivity.handleOperatorOverride();
         }
     }
     public void commandHandler(Command command) {
