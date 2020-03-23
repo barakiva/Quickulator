@@ -42,4 +42,13 @@ public class SimpleEquation {
 
     public void setOperator(Operator operator) { this.operator = operator;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleEquation{" +
+                "argumentList=" + argumentList +
+                ", resultList=" + resultList +
+                ", operator=" + operator +
+                '}';
+    }
 }

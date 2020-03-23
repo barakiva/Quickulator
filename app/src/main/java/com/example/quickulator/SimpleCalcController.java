@@ -30,21 +30,18 @@ public class SimpleCalcController {
     //based on input
     //**Input Handlers
     public void numberInputHandler(double num) {
-        boolean isEquationResolved = !equation.getResultList().isEmpty();
-        if (isEquationResolved) {
+        boolean digitAfterDigitFollowingEquals =
+                !equation.getResultList().isEmpty() && equation.getOperator() == null;
+        if (digitAfterDigitFollowingEquals) {
             restartEquation();
         }
         inputHelper.appendNumber((num));
+        updateEquationView();
     }
     public void operatorInputCatcher(Operator operator) throws Exception {
-        MainActivity mainActivity = (MainActivity) context;
         inputHelper.setOperatorInput(operator);
-        OperationResponse handlerResponse = operatorService.operatorHandler();
-        if (handlerResponse == OperationResponse.ILLEGAL) {
-            mainActivity.handleOperatorError();
-        } else if (handlerResponse == OperationResponse.OVERRIDE) {
-            mainActivity.handleOperatorOverride();
-        }
+        operatorResponseHandler(operatorService.operatorHandler());
+        updateEquationView();
     }
     public void commandHandler(Command command) {
         switch (command){
@@ -55,20 +52,26 @@ public class SimpleCalcController {
                 commandService.clearAll();
                 break;
         }
+        updateEquationView();
     }
     private void restartEquation() {
         commandService.clearAll();
+        updateEquationView();
     }
 
     //GUI
-    public void operatorErrorHandler() {
+    public void operatorResponseHandler(OperationResponse response) {
         MainActivity act = (MainActivity) context;
-        act.handleOperatorError();
+        if (response == OperationResponse.ILLEGAL) {
+            act.handleOperatorError();
+        } else if (response == OperationResponse.OVERRIDE) {
+            act.handleOperatorOverride();
+        }
     }
 
-    private void updateResult() {
+    private void updateEquationView() {
         MainActivity act = (MainActivity) context;
-        act.displayResult(equation);
+        act.updateEquationView(equation);
     }
 
 }

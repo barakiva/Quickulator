@@ -8,8 +8,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.quickulator.databinding.ActivityMainBinding;
 import com.example.quickulator.model.Command;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
@@ -18,25 +19,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//import com.example.quickulator.databinding.ActivityMainBinding;
-
-
 public class MainActivity extends AppCompatActivity {
-    private TextView resultView;
+    // Binding
     private Set<ImageButton> operatorSet = new HashSet<>();
     private Set<ImageButton> commandSet = new HashSet<>();
-
     private Set<Button> numPad = new HashSet<>();
-
-    private CalculatorLogic calcLogic = CalculatorLogic.getInstance();
+    //Equation Screen
+   private TextView resultView;
+   private TextView expressionView;
+    //Controller
     private SimpleCalcController simpleCalcController;
-
+    //MVVM
+    SimpleEquationViewModel simpleEquationViewModel;
+    //Debug Tags
     private static final String NUM_PAD = "NumPad";
     private static final String OPERATOR = "Operator";
     private static final String COMMAND = "Command";
-
-    private ActivityMainBinding binding;
-    private Button btn0Test;
+    private final String EQUATION = "EQUATION";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         simpleCalcController = new SimpleCalcController();
         simpleCalcController.init(this);
 
-        resultView = findViewById(R.id.resultTextView);
         //bind commands
         commandSet.add(findViewById(R.id.clearAllBtn));
         commandSet.add(findViewById(R.id.undoBtn));
@@ -69,6 +67,22 @@ public class MainActivity extends AppCompatActivity {
         numPad.add(findViewById(R.id.btn8));
         numPad.add(findViewById(R.id.btn9));
         numpadBinder();
+        //Equation screen
+        resultView = findViewById(R.id.expressionView);
+        expressionView = findViewById(R.id.expressionView);
+        //MVVM
+        simpleEquationViewModel = new ViewModelProvider(this).get(SimpleEquationViewModel.class);
+
+        final Observer<SimpleEquation> equationObserver = equation -> {
+            Log.i(EQUATION, "Equation has changed!");
+            List<Double> results = equation.getResultList();
+            if (!results.isEmpty()) {
+                resultView.setText(Double.toString(results.get(results.size() - 1)));
+            }
+        };
+
+        simpleEquationViewModel.getEquation().observe(this,equationObserver);
+
 
     }
     private  void commandBinder() {
@@ -103,14 +117,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    public void displayEquation(SimpleEquation equation) {
 
-    }
-    public void displayResult(SimpleEquation equation) {
-        List<Double> resList = equation.getResultList();
-        String txt = String.valueOf(resList.get( resList.size() - 1));
-        Log.d("equation result is", txt);
-        resultView.setText(txt);
+//    private String buildEquationText(SimpleEquation equation) {
+//        if (equation.getResultList().isEmpty()) {
+//
+//        }
+//    }
+//    private String buildExpression(SimpleEquation equation)  {
+//        final int HAS_OPERATOR = 1;
+//        StringBuilder builder = new StringBuilder();
+//        for (int i = 0; i < equation.getArgumentList().size(); i++) {
+//            if (i == HAS_OPERATOR) {
+//                builder.append(equation.getOperator().toString());
+//            }
+//            builder.append(equation.getArgumentList().get(i));
+//        }
+//    }
+
+    public void updateEquationView(SimpleEquation equation) {
+        Log.i(EQUATION, "Updated equation");
+        simpleEquationViewModel.updateEquation(equation);
+//        List<Double> resList = equation.getResultList();
+//        String txt = String.valueOf(resList.get( resList.size() - 1));
+//        Log.d("equation result is", txt);
+//        resultView.setText(txt);
     }
     //Errors
     public void handleOperatorError() {

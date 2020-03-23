@@ -6,8 +6,8 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/resultScreen"
+    <GridLayout
+            android:id="@+id/equationScreen"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/deepBlue"
@@ -17,14 +17,29 @@
             app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:id="@+id/resultTextView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:id="@+id/expressionView"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:textSize="34sp"
+                android:textColor="@color/brightGrey"
+                android:gravity="bottom|right"
+                android:paddingRight="20dp"
+                android:text="5x5"/>
+        <TextView
+                android:id="@+id/resultView"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:textSize="65sp"
+                android:textColor="@color/brightGrey"
+                android:gravity="bottom|right"
+                android:paddingBottom="10dp"
+                android:paddingRight="20dp"
+                android:text="25"/>
+    </GridLayout>
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/topGuide"

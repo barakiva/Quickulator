@@ -73,7 +73,9 @@ public class OperatorService {
         return response;
     }
     private OperationResponse assignOperator() {
-        equation.getArgumentList().add(inputHelper.buildNumber());
+        if (isNovelEquation()) {
+            equation.getArgumentList().add(inputHelper.buildNumber());
+        }
         equation.setOperator(operatorInput);
         return OperationResponse.LEGAL;
     }
@@ -108,5 +110,8 @@ public class OperatorService {
     private boolean isAfterOperator() {
         boolean isEquationResolved = equation.getResultList().isEmpty();
         return equation.getOperator() != null && !isEquationResolved;
+    }
+    private boolean isNovelEquation() {
+        return equation.getArgumentList().isEmpty();
     }
 }
