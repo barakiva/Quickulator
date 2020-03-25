@@ -16,7 +16,7 @@ public class SimpleEquationViewModel extends ViewModel {
         }
         return equation;
     }
-    public void updateEquation(SimpleEquation equation) {
-        this.equation.setValue(equation);
+    public void updateEquation() {
+        this.equation.setValue(SimpleEquation.getInstance());
     }
 }

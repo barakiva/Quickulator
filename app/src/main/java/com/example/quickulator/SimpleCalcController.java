@@ -71,7 +71,7 @@ public class SimpleCalcController {
 
     private void updateEquationView() {
         MainActivity act = (MainActivity) context;
-        act.updateEquationView(equation);
+        act.updateEquationView();
     }
 
 }

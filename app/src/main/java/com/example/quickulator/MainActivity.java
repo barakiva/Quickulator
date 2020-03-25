@@ -1,6 +1,7 @@
 package com.example.quickulator;
 
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,9 +13,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.quickulator.model.Command;
+import com.example.quickulator.model.InputHelper;
 import com.example.quickulator.model.Operator;
 import com.example.quickulator.model.SimpleEquation;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String OPERATOR = "Operator";
     private static final String COMMAND = "Command";
     private final String EQUATION = "EQUATION";
+    //Equation
+    private SimpleEquation equation;
+    private InputHelper inputHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         simpleCalcController = new SimpleCalcController();
         simpleCalcController.init(this);
+        equation = SimpleEquation.getInstance();
+        inputHelper = InputHelper.getInstance();
 
         //bind commands
         commandSet.add(findViewById(R.id.clearAllBtn));
@@ -68,17 +78,13 @@ public class MainActivity extends AppCompatActivity {
         numPad.add(findViewById(R.id.btn9));
         numpadBinder();
         //Equation screen
-        resultView = findViewById(R.id.expressionView);
+        resultView = findViewById(R.id.resultView);
         expressionView = findViewById(R.id.expressionView);
-        //MVVM
         simpleEquationViewModel = new ViewModelProvider(this).get(SimpleEquationViewModel.class);
 
         final Observer<SimpleEquation> equationObserver = equation -> {
-            Log.i(EQUATION, "Equation has changed!");
-            List<Double> results = equation.getResultList();
-            if (!results.isEmpty()) {
-                resultView.setText(Double.toString(results.get(results.size() - 1)));
-            }
+            Log.i(EQUATION, "Observer triggered!");
+            displayEquation();
         };
 
         simpleEquationViewModel.getEquation().observe(this,equationObserver);
@@ -118,29 +124,69 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private String buildEquationText(SimpleEquation equation) {
-//        if (equation.getResultList().isEmpty()) {
-//
-//        }
-//    }
-//    private String buildExpression(SimpleEquation equation)  {
-//        final int HAS_OPERATOR = 1;
-//        StringBuilder builder = new StringBuilder();
-//        for (int i = 0; i < equation.getArgumentList().size(); i++) {
-//            if (i == HAS_OPERATOR) {
-//                builder.append(equation.getOperator().toString());
-//            }
-//            builder.append(equation.getArgumentList().get(i));
-//        }
-//    }
 
-    public void updateEquationView(SimpleEquation equation) {
-        Log.i(EQUATION, "Updated equation");
-        simpleEquationViewModel.updateEquation(equation);
-//        List<Double> resList = equation.getResultList();
-//        String txt = String.valueOf(resList.get( resList.size() - 1));
-//        Log.d("equation result is", txt);
-//        resultView.setText(txt);
+
+    public void displayEquation() {
+        if (!equation.getResultList().isEmpty()) {
+            resultView.setText(buildResult());
+        }
+        if (!equation.getArgumentList().isEmpty() || inputHelper.getDigitInput().length() > 0) {
+            expressionView.setText(buildExpression());
+        }
+    }
+    //Build Strings
+    public String buildResult() {
+        List<Double> results = equation.getResultList();
+        return Double.toString(results.get(results.size() - 1));
+    }
+    public String buildExpression() {
+        StringBuilder expression = new StringBuilder();
+        int dirtyHack = 0;
+        if (equation.getOperator() != null) {
+            dirtyHack = 1;
+        }
+        int memberCount = equation.getArgumentList().size() + dirtyHack;
+        int listIterator = 0;
+        for (int i = 0; i < memberCount; i++) {
+            if (i % 2 == 0) {
+                expression.append(parseArgument(
+                        equation.getArgumentList().get(listIterator)));
+                listIterator++;
+            } else {
+                expression.append(parseOperator());
+            }
+        }
+        //Adds current input that's yet to be built to a number
+        if (inputHelper.getDigitInput().length() > 0) {
+            expression.append(inputHelper.buildNumber());
+        }
+        return expression.toString();
+    }
+    //String build helper functions
+    private String parseArgument(Double n) {
+        DecimalFormat df = new DecimalFormat("#");
+        df.setRoundingMode(RoundingMode.DOWN);
+        return n % 1 == 0 ? df.format(n) : Double.toString(n);
+    }
+    private String parseOperator() {
+        switch (equation.getOperator()) {
+            case ADDITION:
+                return "+";
+            case SUBTRACTION:
+                return "-";
+            case MULTIPLICATION:
+                return "x";
+            case DIVISION:
+                return "/";
+            default:
+                return "";
+        }
+    }
+    //Controller Invoked Functions
+    //Equation update
+    public void updateEquationView() {
+        this.equation = SimpleEquation.getInstance();
+        simpleEquationViewModel.updateEquation();
     }
     //Errors
     public void handleOperatorError() {
